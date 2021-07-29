@@ -7,7 +7,6 @@
         "noVNC"
     ],
     "env": {
-	},
 	"VNC_TITLE" : {
         "description": "VNC Session Title, w/o spaces.",
 	      "value" : "Ubuntu_Desktop",
