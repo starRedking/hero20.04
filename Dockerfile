@@ -2,6 +2,23 @@ FROM ubuntu:20.04 as ubuntu-base
 
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
+#VNC Server Password
+	VNC_PASS="samplepass" \
+#VNC Server Title(w/o spaces)
+	VNC_TITLE="Ubuntu_Desktop" \
+#VNC Resolution(720p is preferable)
+	VNC_RESOLUTION="1280x720" \
+#Local Display Server Port
+	DISPLAY=:0 \
+#NoVNC Port
+	NOVNC_PORT=$PORT \
+#Ngrok Token (It's advisable to use your personal token, else it may clash with other users & your tunnel may get terminated)
+	NGROK_TOKEN="1tNm3GUFYV1A4lQFXF1bjFvnCvM_4DjiFRiXKGHDaTGBJH8VM" \
+#Locale
+	LANG=en_US.UTF-8 \
+	LANGUAGE=en_US.UTF-8 \
+	LC_ALL=C.UTF-8 \
+	TZ="Asia/Kolkata"
 
 RUN apt-get -qqy update \
     && apt-get -qqy --no-install-recommends install \
