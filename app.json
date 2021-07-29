@@ -1,13 +1,12 @@
 {
-    "name": "Virtual Network Computing BY AnhDH ( VPS )",
+    "name": "VPS",
     "description": "Deploy noVNC to Heroku.",
     "keywords": [
         "VNC",
         "Docker",
         "noVNC"
     ],
-    "env": {
-      "VNC_TITLE" : {
+    "env": {      "VNC_TITLE" : {
         "description": "VNC Session Title, w/o spaces.",
 	      "value" : "Ubuntu_Desktop",
         "required" : true
@@ -22,6 +21,6 @@
         "required" : true
       },
     "website": "",
-    "repository": "https://github.com/akuhnet/hero20.04",
+    "repository": "https://github.com/anhdhbn/heroku-novnc.git",
     "stack": "container"
 }
