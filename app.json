@@ -1,0 +1,16 @@
+{
+    "name": "VPS Lifetime By akuh.net)",
+    "description": "Fully fledged Ubuntu NoVNC, Deploy noVNC to Heroku.",
+    "keywords": ["docker","ubuntu", "vscode", "novnc", "firefox", "brave", "fluxbox", "linux", "remote", "ssh", "vnc", "vubuntu"],
+    "env": {
+		"VNC_TITLE" : {
+        "description": "VNC Session Title, w/o spaces.",
+	      "value" : "Ubuntu_Desktop",
+        "required" : true
+      } ,
+	    "VNC_PASS": {
+        "description": "VNC server password w/o spaces.",
+        "required" : true
+      },
+	},
+}
