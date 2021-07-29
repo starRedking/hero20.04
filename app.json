@@ -1,24 +1,13 @@
 {
-    "name": "VPS",
+    "name": "Virtual Network Computing BY AnhDH ( VPS )",
     "description": "Deploy noVNC to Heroku.",
     "keywords": [
         "VNC",
         "Docker",
         "noVNC"
     ],
-    "env": {      "VNC_TITLE" : {
-        "description": "VNC Session Title, w/o spaces.",
-	      "value" : "Ubuntu_Desktop",
-        "required" : true
-      } ,
-      "VNC_PASS": {
-        "description": "VNC server password w/o spaces.",
-        "required" : true
-      },
-      "VNC_RESOLUTION" : {
-        "description": "VNC Server Resolution in WxH, 720p is preferrable.",
-		"value" : "1280x720",
-        "required" : true
-      }
-  }
+    "env": {},
+    "website": "",
+    "repository": "https://github.com/akuhnet/hero20.04.git",
+    "stack": "container"
 }
