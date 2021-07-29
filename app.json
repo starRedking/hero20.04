@@ -11,6 +11,6 @@
 	    "VNC_PASS": {
         "description": "VNC server password w/o spaces.",
         "required" : true
-      },
-	},
+      }
+    }
 }
