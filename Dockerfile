@@ -1,7 +1,8 @@
-FROM ubuntu:20.04 as ubuntu-base
+FROM ubuntu:20.04
+LABEL AboutImage "Ubuntu20.04_Fluxbox_NoVNC"
+LABEL Maintainer "Apoorv Vyavahare <apoorvvyavahare@pm.me>"
 ARG DEBIAN_FRONTEND=noninteractive
 ENV DEBIAN_FRONTEND=noninteractive \
-    DEBCONF_NONINTERACTIVE_SEEN=true
 #VNC Server Password
 	VNC_PASS="samplepass" \
 #VNC Server Title(w/o spaces)
@@ -20,73 +21,78 @@ ENV DEBIAN_FRONTEND=noninteractive \
 	LC_ALL=C.UTF-8 \
 	TZ="Asia/Kolkata"
 COPY . /app
-RUN apt-get -qqy update \
-    && apt-get -qqy --no-install-recommends install \
-        sudo \
-        supervisor \
-        xvfb x11vnc novnc websockify \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+RUN rm -rf /etc/apt/sources.list && \
+#All Official Focal Repos
+	bash -c 'echo -e "deb http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse\ndeb-src http://archive.ubuntu.com/ubuntu/ focal main restricted universe multiverse\ndeb http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse\ndeb-src http://archive.ubuntu.com/ubuntu/ focal-updates main restricted universe multiverse\ndeb http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse\ndeb-src http://archive.ubuntu.com/ubuntu/ focal-security main restricted universe multiverse\ndeb http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse\ndeb-src http://archive.ubuntu.com/ubuntu/ focal-backports main restricted universe multiverse\ndeb http://archive.canonical.com/ubuntu focal partner\ndeb-src http://archive.canonical.com/ubuntu focal partner" >/etc/apt/sources.list' && \
+	rm /bin/sh && ln -s /bin/bash /bin/sh && \
+	apt-get update && \
+	apt-get install -y \
+#Packages Installation
+	tzdata \
+	software-properties-common \
+	apt-transport-https \
+	wget \
+	git \
+	curl \
+	vim \
+	zip \
+	net-tools \
+	iputils-ping \
+	build-essential \
+	python3 \
+	python3-pip \
+	python-is-python3 \
+	perl \
+	ruby \
+	golang \
+	lua5.3 \
+	scala \
+	mono-complete \
+	r-base \
+	default-jre \
+	default-jdk \
+	clojure \
+	php \
+	firefox \
+	gnome-terminal \
+	gnome-calculator \
+	gnome-system-monitor \
+	gedit \
+	vim-gtk3 \
+	mousepad \
+	libreoffice \
+	pcmanfm \
+	snapd \
+	terminator \
+	websockify \
+	supervisor \
+	x11vnc \
+	xvfb \
+	gnupg \
+	dirmngr \
+	gdebi-core \
+	nginx \
+	novnc \
+	openvpn \
+	ffmpeg \
+#MATE Desktop
+	apt install -y \ 
+	ubuntu-mate-core \
+	ubuntu-mate-desktop && \
+#XFCE Desktop
+	#apt install -y \
+	#xubuntu-desktop && \
+#TimeZone
+	ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && \
+	echo $TZ > /etc/timezone && \
+#NoVNC
+	cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html && \
+	openssl req -new -newkey rsa:4096 -days 36500 -nodes -x509 -subj "/C=IN/ST=Maharastra/L=Private/O=Dis/CN=www.google.com" -keyout /etc/ssl/novnc.key  -out /etc/ssl/novnc.cert && \
+#Brave
+	curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg && \
+	echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main"|tee /etc/apt/sources.list.d/brave-browser-release.list && \
+	apt update && \
+	apt install brave-browser -y && \
+ENTRYPOINT ["supervisord", "-c"]
 
-RUN cp /usr/share/novnc/vnc.html /usr/share/novnc/index.html
-
-COPY scripts/* /opt/bin/
-
-# Add Supervisor configuration file
-COPY supervisord.conf /etc/supervisor/
-
-# Relaxing permissions for other non-sudo environments
-RUN  mkdir -p /var/run/supervisor /var/log/supervisor \
-    && chmod -R 777 /opt/bin/ /var/run/supervisor /var/log/supervisor /etc/passwd \
-    && chgrp -R 0 /opt/bin/ /var/run/supervisor /var/log/supervisor \
-    && chmod -R g=u /opt/bin/ /var/run/supervisor /var/log/supervisor
-
-# Creating base directory for Xvfb
-RUN mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix
-
-CMD ["/opt/bin/entry_point.sh"]
-
-#============================
-# Utilities
-#============================
-FROM ubuntu-base as ubuntu-utilities
-
-RUN apt-get -qqy update \
-    && apt-get -qqy --no-install-recommends install \
-        firefox htop terminator gnupg2 software-properties-common \
-    && wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb \
-    && apt install -qqy --no-install-recommends ./google-chrome-stable_current_amd64.deb \
-    && apt-add-repository ppa:remmina-ppa-team/remmina-next \
-    && apt update \
-    && apt install -qqy --no-install-recommends remmina remmina-plugin-rdp remmina-plugin-secret \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-# COPY conf.d/* /etc/supervisor/conf.d/
-
-
-#============================
-# GUI
-#============================
-FROM ubuntu-utilities as ubuntu-ui
-
-ENV SCREEN_WIDTH=1680 \
-    SCREEN_HEIGHT=1050 \
-    SCREEN_DEPTH=24 \
-    SCREEN_DPI=96 \
-    DISPLAY=:99 \
-    DISPLAY_NUM=99 \
-    UI_COMMAND=/usr/bin/startxfce4
-
-# RUN apt-get update -qqy \
-#     && apt-get -qqy install \
-#         xserver-xorg xserver-xorg-video-fbdev xinit pciutils xinput xfonts-100dpi xfonts-75dpi xfonts-scalable kde-plasma-desktop
-
-RUN apt-get update -qqy \
-    && apt-get -qqy install --no-install-recommends \
-        dbus-x11 xfce4 \
-    && apt-get autoclean \
-    && apt-get autoremove \
-    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
+CMD ["/app/supervisord.conf"]
