@@ -7,9 +7,6 @@
         "noVNC"
     ],
     "env": {
-    "website": "",
-    "repository": "https://github.com/akuhnet/hero20.04.git",
-    "stack": "container"
 	},
 	"VNC_TITLE" : {
         "description": "VNC Session Title, w/o spaces.",
@@ -22,3 +19,6 @@
       }
     }
 }
+    "website": "",
+    "repository": "https://github.com/akuhnet/hero20.04.git",
+    "stack": "container"
