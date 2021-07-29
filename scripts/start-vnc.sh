@@ -9,5 +9,4 @@ do
     fi
     echo "Waiting for Xvfb..."
 done
-
-x11vnc -forever -shared -rfbport ${VNC_PORT:-5900} -rfbportv6 ${VNC_PORT:-5900} -display ${DISPLAY}
+x11vnc -storepasswd $VNC_PASS /etc/xpass && x11vnc -usepw -rfbport 5900 -rfbauth /etc/xpass -geometry $VNC_RESOLUTION -forever -alwaysshared -permitfiletransfer -bg -desktop $VNC_TITLE
