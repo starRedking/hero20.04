@@ -21,5 +21,8 @@
 		"value" : "1280x720",
         "required" : true
       }
+    "website": "",
+    "repository": "https://github.com/anhdhbn/heroku-novnc.git",
+    "stack": "container"
     } 
   }
