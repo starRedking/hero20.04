@@ -1,9 +1,17 @@
 {
-    "name": "VPS Lifetime By akuh.net)",
-    "description": "Fully fledged Ubuntu NoVNC, Deploy noVNC to Heroku.",
-    "keywords": ["docker","ubuntu", "vscode", "novnc", "firefox", "brave", "fluxbox", "linux", "remote", "ssh", "vnc", "vubuntu"],
-    "env": {
-		"VNC_TITLE" : {
+    "name": "Virtual Network Computing BY AnhDH ( VPS )",
+    "description": "Deploy noVNC to Heroku.",
+    "keywords": [
+        "VNC",
+        "Docker",
+        "noVNC"
+    ],
+    "env": {},
+    "website": "",
+    "repository": "https://github.com/akuhnet/hero20.04.git",
+    "stack": "container"
+	},
+	"VNC_TITLE" : {
         "description": "VNC Session Title, w/o spaces.",
 	      "value" : "Ubuntu_Desktop",
         "required" : true
