@@ -20,9 +20,7 @@
         "description": "VNC Server Resolution in WxH, 720p is preferrable.",
 		"value" : "1280x720",
         "required" : true
-      }
-  }, 
-
+      },
     "website": "",
     "repository": "https://github.com/akuhnet/hero20.04",
     "stack": "container"
