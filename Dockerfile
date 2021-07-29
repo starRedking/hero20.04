@@ -1,5 +1,5 @@
 FROM ubuntu:20.04 as ubuntu-base
-
+ARG DEBIAN_FRONTEND=noninteractive
 ENV DEBIAN_FRONTEND=noninteractive \
     DEBCONF_NONINTERACTIVE_SEEN=true
 #VNC Server Password
@@ -19,7 +19,7 @@ ENV DEBIAN_FRONTEND=noninteractive \
 	LANGUAGE=en_US.UTF-8 \
 	LC_ALL=C.UTF-8 \
 	TZ="Asia/Kolkata"
-
+COPY . /app
 RUN apt-get -qqy update \
     && apt-get -qqy --no-install-recommends install \
         sudo \
